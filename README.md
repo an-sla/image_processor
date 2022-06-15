@@ -1,1 +1,1 @@
-# bmp-filter
+# BMP Image Processor in C++
