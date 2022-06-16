@@ -10,7 +10,10 @@
 
 The program returns an image in the same 24-bit BMP format with one or more out of 5 available filters applied to it. If no filter argument is provided, the program returns the original image. If multiple filter arguments are given, the filters are applied consecutively.
 
-**Argument Input Format**
+Each pixel colour is represented by a 1x3 vector of values between 0 and 1, corresponding to its `(R, G, B)` markers. `(0, 0, 0)` represents black and `(1, 1, 1)` represents white. Some of the filters apply a matrix to each of the pixel's colours by using input from its surrounding pixels — thus, in the 'Sharpening' and 'Edge' filters, a pixel's colours are influenced by the 8 pixels surrounding it (directly above, on each side, and below). When a given pixel lies in a corner or at the border of the image, only non-empty / existing surrounding pixels are used to calculate its new values.
+
+
+### Input Format
 
 The program accepts input in the form:
 
@@ -20,29 +23,50 @@ The program accepts input in the form:
 Note the dash in front of the filter name. If no filter arguments are provided where they are needed or if the parameter format and number of parameters does not correspond to the filter name, the program returns an error message with instructions of what to include.
 
 
-**Available Filters**
+### Available Filters
 
-1. Crop `-crop width height`
-Обрезает изображение до заданных ширины и высоты. Используется верхняя левая часть изображения.
+**1. Crop** `-crop width height`
 
-Если запрошенные ширина или высота превышают размеры исходного изображения, выдается доступная часть изображения.
+Crops the image to the given width and height. The upper-left corner of the image is used as the starting point. If the height or the width parameters exceed the original image size, the entire available original image is returned.
 
-2. Grayscale `-gs`
-Преобразует изображение в оттенки серого по формуле
 
-![encoding](https://latex.codecogs.com/svg.image?R'%20=%20G'%20=%20B'%20=0.299%20R%20&plus;%200%20.587%20G%20&plus;%200%20.%20114%20B)
+**2. Grayscale** `-gs`
 
-3. Negative `-neg`
-Преобразует изображение в негатив по формуле
+Converts the image to greyscale, based on the formula:
+```diff
+- R' G' B' are new values, R, G, B are original values for each pixel -
+R' = B' = G = 0.299 * R + 0.587 * G + 0.114 * B
+```
 
-![encoding](https://latex.codecogs.com/svg.image?R'%20=%201%20-%20R,%20G'%20=%201%20-%20G,%20B'%20=%201%20-%20B)
 
-4. Sharpening `-sharp`
-Повышение резкости. Достигается применением матрицы
+**3. Negative** `-neg`
 
-![encoding](https://latex.codecogs.com/svg.image?%5Cbegin%7Bbmatrix%7D%20&%20-1%20&%20%20%5C%5C-1%20&%205%20&%20-1%20%5C%5C%20&%20-1%20&%20%20%5C%5C%5Cend%7Bbmatrix%7D)
+Inverts the image colours to a negative scale, based on the formula:
+```diff
+- R' G' B' are new values, R, G, B are original values for each pixel -
+R' = 1 - R
+G' = 1 - G
+B' = 1 -B
+```
 
-5. Edge Detection `-edge threshold`
+**4. Sharpening** `-sharp`
+
+Enhances image sharpness, the following matrix is applied:
+```diff
+- the value of each pixel is multiplied by the matrix: -
+ 0   —1   0
+—1    5  —1
+ 0   —1   0
+
+- thus, E is the new matrix and A is the original —
+E[x][y] =
+   0 * A[x-1][y-1]  +  (-1) * A[x][y-1]  +  0 * A[x+1][y-1] +
+   (-1) * A[x-1][y]  +  5 * A[x][y]  +  (-1) * A[x+1][y] +
+   0 * A[x-1][y+1]  +  (-1) * A[x][y+1]  +  0 * A[x+1][y+1]
+```
+
+
+**5. Edge Detection** `-edge threshold`
 
 Selects and highlights edges. The image is converted to greyscale and the following matrix is applied:
 
@@ -59,7 +83,7 @@ E[x][y] =
    0 * A[x-1][y+1]  +  (-1) * A[x][y+1]  +  0 * A[x+1][y+1]
 ```
 
-Pixels whose values after this multiplication exceed the given `threshold` argument are coloured white, the rest are coloured black.
+Pixels whose values after this multiplication exceed the given `threshold` argument are coloured white `(1, 1, 1)`, the rest are coloured black `(0, 0, 0)`.
 
 
 
