@@ -46,9 +46,20 @@ Note the dash in front of the filter name. If no filter arguments are provided w
 
 Selects and highlights edges. The image is converted to greyscale and the following matrix is applied:
 
-<img src="https://latex.codecogs.com/svg.image?\begin{bmatrix}&space;&&space;&space;-1&&space;&space;\\&space;-1&&space;&space;4&&space;&space;-1\\&space;&&space;&space;-1&&space;&space;\\\end{bmatrix}">
+```diff
+- the value of each pixel is multiplied by the matrix: -
+ 0   —1   0
+—1    4  —1
+ 0   —1   0
 
-Pixels whose values exceed the given `threshold` are coloured white, the rest are coloured black.
+- thus, E is the new matrix and A is the original —
+E[x][y] =
+   0 * A[x-1][y-1]  +  (-1) * A[x][y-1]  +  0 * A[x+1][y-1] +
+   (-1) * A[x-1][y]  +  4 * A[x][y]  +  (-1) * A[x+1][y] +
+   0 * A[x-1][y+1]  +  (-1) * A[x][y+1]  +  0 * A[x+1][y+1]
+```
+
+Pixels whose values after this multiplication exceed the given `threshold` argument are coloured white, the rest are coloured black.
 
 
 
