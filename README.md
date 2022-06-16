@@ -119,6 +119,9 @@ g++ -std=c++17 -o image_processor image_processor.cpp controller.cpp file_work.c
 - shown for lena.bmp, negative filter -
 ./image_processor input-bmp_files/input-lena.bmp negative_results/output.bmp -neg
 ```
+### Examples
+
+- Sample images are available in the [input-bmp_files](https://github.com/an-sla/image_processor/tree/main/input-bmp_files) directory, expected results with the given parameters are provided in the [crop](https://github.com/an-sla/image_processor/tree/main/crop-various_results), [greyscale](https://github.com/an-sla/image_processor/tree/main/greyscale_results), [negative](https://github.com/an-sla/image_processor/tree/main/negative_results), [sharpening](https://github.com/an-sla/image_processor/tree/main/sharpening_results), and [edge](https://github.com/an-sla/image_processor/tree/main/edge0.01_results) directories.
 
 <br>
 
@@ -127,6 +130,8 @@ g++ -std=c++17 -o image_processor image_processor.cpp controller.cpp file_work.c
   - [FileFormat.Info](https://www.fileformat.info/format/bmp/sample/1d71eff930af4773a836a32229fde106/download) under the Creative Commons Attribution-Share Alike 3.0 United States License;
   - [The University of Southern Carolina BMP Files page](https://people.math.sc.edu/Burkardt/data/bmp/bmp.html) under the the GNU LGPL license;
   - [The HSE University GitLab Repository for this project](https://gitlab.com/levanovd/cpp-base-hse-2022), originally by Dwight Hooker, copyrighted, and distributed under the 'Fair Use' exception to US copyright law.
+
+These have been modified with the program's filters for demonstration and educational purposes.
 
 This project is licensed under the [GNU General Public License 3.0](https://www.gnu.org/licenses/gpl-3.0.en.html).
 
